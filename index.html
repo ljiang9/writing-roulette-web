@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>写作灵感转盘 writing-roulette-web</title>
+<style>
+body{font-family:system-ui,sans-serif;max-width:760px;margin:24px auto;padding:0 16px;text-align:center}
+button{padding:10px 22px;font-size:16px;cursor:pointer}
+#result{font-size:18px;margin-top:16px;line-height:1.8}
+.spin{animation:spin .6s ease}
+@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+<h1>写作灵感转盘</h1>
+<p>随机组合 人物 × 场景 × 体裁 × 约束。无 API Key。</p>
+<button onclick="spin()">转一次</button>
+<div id="result">点上面按钮抽一组灵感。</div>
+<script>
+const CHARACTERS=["退休宇航员","十三岁黑客","深夜便利店店员","流浪诗人","失忆的侦探","会说话的猫"];
+const SCENES=["暴雨夜的火车站","无人灯塔","2050 年的地铁","老唱片店","手术室","月球背面基地"];
+const GENRES=["推理","科幻","童话","爱情","悬疑","散文"];
+const CONSTRAINTS=["必须以一句谎言开头","全篇不超过 300 字","出现三次同一个物件","结尾必须反转","只能用现在时","必须包含一只动物"];
+function pick(arr,r){return arr[Math.floor(r*arr.length)];}
+function compose(r4){return {character:pick(CHARACTERS,r4[0]),scene:pick(SCENES,r4[1]),genre:pick(GENRES,r4[2]),constraint:pick(CONSTRAINTS,r4[3])};}
+function format(c){return `【${c.genre}】主角：${c.character}；场景：${c.scene}；约束：${c.constraint}`;}
+if(typeof module!=='undefined'){module.exports={compose,format,CHARACTERS,SCENES,GENRES,CONSTRAINTS,pick};}
+function spin(){const r=[Math.random(),Math.random(),Math.random(),Math.random()];const c=compose(r);const el=document.getElementById('result');el.classList.remove('spin');void el.offsetWidth;el.classList.add('spin');el.textContent=format(c);}
+</script>
+</body>
+</html>
